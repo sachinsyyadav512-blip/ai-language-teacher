@@ -1,54 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LingoAI - Your Personal Language Teacher</title>
+    <title>Sachin AI Tutor V2 - Learn Languages Faster</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --primary-color: #4a90e2;
-            --secondary-color: #f5f7fa;
-            --text-color: #333;
-            --bg-color: #ffffff;
-            --card-bg: #ffffff;
-            --border-color: #ddd;
-            --user-msg: #e1f5fe;
-            --ai-msg: #f1f1f1;
-        }
-
-        [data-theme="dark"] {
-            --primary-color: #3a7bd5;
-            --secondary-color: #1a1a1a;
-            --text-color: #f5f5f5;
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --border-color: #333;
-            --user-msg: #2c3e50;
-            --ai-msg: #333;
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --text-dark: #2b2d42;
+            --text-light: #8d99ae;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
         }
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
             line-height: 1.6;
         }
 
-        /* Navigation */
+        /* --- Navigation --- */
         nav {
+            background: var(--white);
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 5%;
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -56,453 +48,434 @@
 
         .logo {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 700;
             color: var(--primary-color);
         }
 
         .nav-links {
             display: flex;
-            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-color);
-            cursor: pointer;
+            color: var(--text-dark);
             font-weight: 500;
+            transition: 0.3s;
         }
 
         .nav-links a:hover {
             color: var(--primary-color);
         }
 
-        .controls {
+        /* --- Hero Section --- */
+        .hero {
+            padding: 80px 5%;
             display: flex;
             align-items: center;
-            gap: 15px;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 20px;
-        }
-
-        .section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Home Page */
-        .hero {
-            text-align: center;
-            padding: 3rem 0;
-        }
-
-        .btn {
-            background-color: var(--primary-color);
+            justify-content: space-between;
+            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
             color: white;
-            padding: 12px 24px;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .btn-main {
+            padding: 12px 30px;
+            background: var(--white);
+            color: var(--primary-color);
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 1rem;
+            transition: 0.3s;
             text-decoration: none;
             display: inline-block;
         }
 
-        /* Language Selection */
-        .lang-grid {
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* --- Language Selector --- */
+        .section-padding {
+            padding: 60px 5%;
+            text-align: center;
+        }
+
+        .language-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
-            margin-top: 2rem;
+            margin-top: 30px;
         }
 
         .lang-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 2rem;
-            text-align: center;
-            border-radius: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: 0.3s;
         }
 
         .lang-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
         }
 
-        .lang-card.selected {
-            border: 2px solid var(--primary-color);
-            background-color: var(--secondary-color);
-        }
-
-        /* Chat UI */
-        .chat-container {
-            height: 500px;
-            display: flex;
-            flex-direction: column;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+        /* --- AI Chat Section --- */
+        #chat-section {
+            background: #fff;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        #chat-window {
-            flex: 1;
-            padding: 20px;
+        .chat-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #chat-box {
+            height: 400px;
             overflow-y: auto;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+            background: #f0f2f5;
         }
 
         .message {
             max-width: 80%;
             padding: 10px 15px;
             border-radius: 15px;
-            margin: 5px 0;
+            font-size: 0.95rem;
         }
 
-        .user-message {
-            align-self: flex-end;
-            background-color: var(--user-msg);
-            color: #333;
-        }
-
-        .ai-message {
+        .ai-msg {
             align-self: flex-start;
-            background-color: var(--ai-msg);
+            background: white;
+            color: var(--text-dark);
+            border-bottom-left-radius: 2px;
+        }
+
+        .user-msg {
+            align-self: flex-end;
+            background: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 2px;
         }
 
         .chat-input-area {
             display: flex;
             padding: 15px;
-            border-top: 1px solid var(--border-color);
-            gap: 10px;
+            background: white;
+            border-top: 1px solid #eee;
         }
 
         .chat-input-area input {
             flex: 1;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            background: var(--bg-color);
-            color: var(--text-color);
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
         }
 
-        /* Tables & Lists */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+        .chat-input-area button {
+            margin-left: 10px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
         }
 
-        .data-table th, .data-table td {
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            text-align: left;
+        /* --- Feature Cards --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
         }
 
-        .data-table th {
-            background-color: var(--secondary-color);
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.3s;
+            text-align: center;
         }
 
-        /* Quiz */
-        .quiz-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
         }
 
-        /* Mobile Responsive */
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        /* --- Quiz Section --- */
+        .quiz-container {
+            background: white;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            background: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .option-btn:hover {
+            background: #f0f0f0;
+            border-color: var(--primary-color);
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 40px 5%;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Mobile Friendly Adjustments */
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .nav-mobile-toggle { display: block; }
-            .hero h1 { font-size: 1.5rem; }
-        }
-
-        .mode-toggle {
-            cursor: pointer;
-            background: none;
-            border: 1px solid var(--border-color);
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: var(--text-color);
+            .hero-content h1 { font-size: 2rem; }
+            .hero { text-align: center; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Navigation -->
     <nav>
-        <div class="logo">LingoAI</div>
-        <div class="nav-links">
-            <a onclick="showPage('home')">Home</a>
-            <a onclick="showPage('languages')">Languages</a>
-            <a onclick="showPage('chat')">AI Tutor</a>
-            <a onclick="showPage('grammar')">Grammar</a>
-            <a onclick="showPage('vocab')">Vocabulary</a>
-            <a onclick="showPage('quiz')">Quiz</a>
-        </div>
-        <div class="controls">
-            <button class="mode-toggle" onclick="toggleDarkMode()">🌓 Mode</button>
-        </div>
+        <div class="logo">Sachin AI Tutor <small>v2</small></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#grammar">Grammar</a></li>
+            <li><a href="#vocab">Vocabulary</a></li>
+            <li><a href="#quiz">Quiz</a></li>
+            <li><a href="#chat">AI Teacher</a></li>
+        </ul>
     </nav>
 
-    <div class="container">
-        <!-- Home Page -->
-        <section id="home" class="section active">
-            <div class="hero">
-                <h1>Master a New Language with AI</h1>
-                <p>Personalized lessons in English, Hindi, Urdu, and Punjabi. Learn grammar, build vocabulary, and practice conversations.</p>
-                <br>
-                <button class="btn" onclick="showPage('languages')">Get Started</button>
-            </div>
-        </section>
+    <!-- Hero Section -->
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <h1>अपनी पसंदीदा भाषा सीखें, <br>AI की शक्ति के साथ!</h1>
+            <p>English, Hindi, Urdu, Punjabi और बहुत कुछ। अब सीखना हुआ आसान, मजेदार और फ्री।</p>
+            <a href="#chat" class="btn-main">अभी शुरू करें</a>
+        </div>
+        <div class="hero-img">
+            <i class="fas fa-user-graduate fa-10x" style="opacity: 0.2;"></i>
+        </div>
+    </header>
 
-        <!-- Language Selection -->
-        <section id="languages" class="section">
-            <h2 style="text-align: center;">Choose Your Language</h2>
-            <div class="lang-grid">
-                <div class="lang-card" onclick="selectLanguage('English')">
-                    <div style="font-size: 3rem;">🇬🇧</div>
-                    <h3>English</h3>
-                </div>
-                <div class="lang-card" onclick="selectLanguage('Hindi')">
-                    <div style="font-size: 3rem;">🇮🇳</div>
-                    <h3>Hindi</h3>
-                </div>
-                <div class="lang-card" onclick="selectLanguage('Urdu')">
-                    <div style="font-size: 3rem;">🇵🇰</div>
-                    <h3>Urdu</h3>
-                </div>
-                <div class="lang-card" onclick="selectLanguage('Punjabi')">
-                    <div style="font-size: 3rem;">🌾</div>
-                    <h3>Punjabi</h3>
-                </div>
+    <!-- Language Selection -->
+    <section class="section-padding">
+        <h2>अपनी भाषा चुनें (Choose Language)</h2>
+        <div class="language-grid">
+            <div class="lang-card" onclick="setLanguage('English')">
+                <i class="fas fa-language"></i>
+                <h3>English</h3>
             </div>
-        </section>
-
-        <!-- Chat UI -->
-        <section id="chat" class="section">
-            <h2 id="chat-title">Chatting with AI Tutor</h2>
-            <div class="chat-container">
-                <div id="chat-window">
-                    <div class="message ai-message">Hello! I am your AI language tutor. Please select a language first, then we can start practicing.</div>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" id="user-input" placeholder="Type your message here..." onkeypress="handleKeyPress(event)">
-                    <button class="btn" onclick="sendMessage()">Send</button>
-                </div>
+            <div class="lang-card" onclick="setLanguage('Hindi')">
+                <i class="fas fa-language"></i>
+                <h3>Hindi</h3>
             </div>
-        </section>
-
-        <!-- Grammar Page -->
-        <section id="grammar" class="section">
-            <h2 id="grammar-title">Grammar Rules</h2>
-            <div id="grammar-content">
-                <p>Please select a language to see grammar rules.</p>
+            <div class="lang-card" onclick="setLanguage('Urdu')">
+                <i class="fas fa-language"></i>
+                <h3>Urdu</h3>
             </div>
-        </section>
-
-        <!-- Vocabulary Page -->
-        <section id="vocab" class="section">
-            <h2 id="vocab-title">Vocabulary Builder</h2>
-            <div id="vocab-content">
-                <p>Please select a language to see vocabulary words.</p>
+            <div class="lang-card" onclick="setLanguage('Punjabi')">
+                <i class="fas fa-language"></i>
+                <h3>Punjabi</h3>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Quiz Page -->
-        <section id="quiz" class="section">
-            <h2 id="quiz-title">Practice Quiz</h2>
-            <div id="quiz-content">
-                <p>Please select a language to take a quiz.</p>
+    <!-- Features Section -->
+    <section class="section-padding" style="background: #f1f4f9;">
+        <h2>मुख्य फीचर्स</h2>
+        <div class="features-grid">
+            <div class="feature-card" id="grammar">
+                <i class="fas fa-book"></i>
+                <h3>Grammar Practice</h3>
+                <p>नियमों को सरल तरीके से सीखें और अपनी गलतियों को सुधारें।</p>
+                <button class="option-btn" onclick="showToast('Grammar lessons loading...')">अभ्यास करें</button>
             </div>
-            <div id="quiz-container"></div>
-            <button class="btn" id="quiz-submit" style="display:none;" onclick="checkQuiz()">Submit Quiz</button>
-            <p id="quiz-result" style="margin-top:20px; font-weight:bold;"></p>
-        </section>
-    </div>
+            <div class="feature-card" id="vocab">
+                <i class="fas fa-spell-check"></i>
+                <h3>Vocabulary</h3>
+                <p>रोजाना नए शब्द सीखें और अपनी शब्दावली को मजबूत बनाएं।</p>
+                <button class="option-btn" onclick="showToast('Vocabulary list building...')">शब्द देखें</button>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobile Friendly</h3>
+                <p>कहीं भी, कभी भी अपने मोबाइल पर अपनी पढ़ाई जारी रखें।</p>
+            </div>
+        </div>
+    </section>
 
+    <!-- AI Chat Section -->
+    <section class="section-padding" id="chat">
+        <h2>AI Teacher Chat</h2>
+        <p>अपने AI टीचर "Sachin" से कोई भी सवाल पूछें।</p>
+        <div id="chat-section">
+            <div class="chat-header">Sachin AI Tutor (Online)</div>
+            <div id="chat-box">
+                <div class="message ai-msg">नमस्ते! मैं सचिन हूँ, आपका AI टीचर। आज आप कौन सी भाषा सीखना चाहते हैं?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="user-input" placeholder="यहाँ टाइप करें..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section class="section-padding" id="quiz">
+        <h2>Quick Quiz</h2>
+        <div class="quiz-container">
+            <p id="quiz-question">"Hello" को हिंदी में क्या कहते हैं?</p>
+            <div id="quiz-options">
+                <button class="option-btn" onclick="checkAnswer(true)">नमस्ते</button>
+                <button class="option-btn" onclick="checkAnswer(false)">अलविदा</button>
+                <button class="option-btn" onclick="checkAnswer(false)">धन्यवाद</button>
+            </div>
+            <p id="quiz-result" style="margin-top: 15px; font-weight: bold;"></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Sachin AI Tutor V2. All Rights Reserved.</p>
+        <p>Made with ❤️ for Learners</p>
+    </footer>
+
+    <!-- JavaScript Functional Logic -->
     <script>
-        let currentLanguage = "";
-        let isDarkMode = false;
+        let currentLanguage = "English";
 
-        // Content Database
-        const db = {
-            "English": {
-                grammar: "<h3>Tenses Overview</h3><ul><li><b>Present Simple:</b> I study.</li><li><b>Past Simple:</b> I studied.</li><li><b>Future:</b> I will study.</li></ul>",
-                vocab: [
-                    {word: "Benevolent", meaning: "Kind and well-meaning"},
-                    {word: "Ephemeral", meaning: "Lasting for a very short time"},
-                    {word: "Resilient", meaning: "Able to withstand or recover quickly"}
-                ],
-                quiz: [
-                    {q: "What is the past tense of 'Go'?", a: "went"},
-                    {q: "Synonym of 'Happy'?", a: "joyful"}
-                ],
-                aiHello: "Hello! How can I help you improve your English today?"
-            },
-            "Hindi": {
-                grammar: "<h3>Gender in Nouns</h3><p>In Hindi, all nouns have a gender (Masculine or Feminine). For example, 'Ladka' (Boy) is masculine, 'Ladki' (Girl) is feminine.</p>",
-                vocab: [
-                    {word: "Namaste", meaning: "Hello / Greetings"},
-                    {word: "Dhanyavad", meaning: "Thank You"},
-                    {word: "Shanti", meaning: "Peace"}
-                ],
-                quiz: [
-                    {q: "How do you say 'Hello' in Hindi?", a: "namaste"},
-                    {q: "Is 'Mera' used for Masculine or Feminine?", a: "masculine"}
-                ],
-                aiHello: "नमस्ते! आज आप हिंदी में क्या सीखना चाहेंगे?"
-            },
-            "Urdu": {
-                grammar: "<h3>Urdu Script</h3><p>Urdu is written from right to left in the Nastaliq script. It shares many grammatical structures with Hindi.</p>",
-                vocab: [
-                    {word: "Shukriya", meaning: "Thank You"},
-                    {word: "Khushamdeed", meaning: "Welcome"},
-                    {word: "Mohabbat", meaning: "Love"}
-                ],
-                quiz: [
-                    {q: "How do you say 'Welcome' in Urdu?", a: "khushamdeed"},
-                    {q: "Does Urdu write Left-to-Right?", a: "no"}
-                ],
-                aiHello: "اسلام علیکم! میں آپ کی اردو سیکھنے میں کیسے مدد کر سکتا ہوں؟"
-            },
-            "Punjabi": {
-                grammar: "<h3>Tones in Punjabi</h3><p>Unlike many other Indo-Aryan languages, Punjabi uses lexical tones to distinguish words.</p>",
-                vocab: [
-                    {word: "Sat Sri Akal", meaning: "Greetings (Sikh)"},
-                    {word: "Tusi", meaning: "You (Respectful)"},
-                    {word: "Changa", meaning: "Good / Fine"}
-                ],
-                quiz: [
-                    {q: "Common greeting in Punjabi?", a: "sat sri akal"},
-                    {q: "How to say 'Good' in Punjabi?", a: "changa"}
-                ],
-                aiHello: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਅੱਜ ਅਸੀਂ ਪੰਜਾਬੀ ਵਿੱਚ ਕੀ ਸਿੱਖਾਂਗੇ?"
-            }
-        };
-
-        function showPage(pageId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-        }
-
-        function selectLanguage(lang) {
+        function setLanguage(lang) {
             currentLanguage = lang;
+            alert("अब आप " + lang + " सीखेंगे!");
+            document.querySelector('.ai-msg').innerText = `बहुत अच्छा! हमने ${lang} सीखना शुरू कर दिया है। आप क्या पूछना चाहते हैं?`;
+        }
+
+        // AI Chat Logic
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const chatBox = document.getElementById('chat-box');
             
-            // Highlight selected card
-            document.querySelectorAll('.lang-card').forEach(card => {
-                card.classList.remove('selected');
-                if(card.querySelector('h3').innerText === lang) card.classList.add('selected');
-            });
+            if (input.value.trim() === "") return;
 
-            // Update Sections
-            document.getElementById('chat-title').innerText = `AI Tutor - Learning ${lang}`;
-            document.getElementById('grammar-title').innerText = `${lang} Grammar Rules`;
-            document.getElementById('vocab-title').innerText = `${lang} Vocabulary`;
-            document.getElementById('quiz-title').innerText = `${lang} Practice Quiz`;
+            // User Message
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-msg';
+            userDiv.innerText = input.value;
+            chatBox.appendChild(userDiv);
 
-            // Load Content
-            document.getElementById('grammar-content').innerHTML = db[lang].grammar;
-            
-            let vocabHtml = `<table class="data-table"><tr><th>Word</th><th>Meaning</th></tr>`;
-            db[lang].vocab.forEach(v => {
-                vocabHtml += `<tr><td>${v.word}</td><td>${v.meaning}</td></tr>`;
-            });
-            vocabHtml += `</table>`;
-            document.getElementById('vocab-content').innerHTML = vocabHtml;
+            const userText = input.value.toLowerCase();
+            input.value = "";
 
-            // Load Quiz
-            let quizHtml = "";
-            db[lang].quiz.forEach((q, index) => {
-                quizHtml += `
-                    <div class="quiz-card">
-                        <p>Q${index+1}: ${q.q}</p>
-                        <input type="text" class="quiz-input" id="q-${index}" placeholder="Your answer...">
-                    </div>
-                `;
-            });
-            document.getElementById('quiz-container').innerHTML = quizHtml;
-            document.getElementById('quiz-submit').style.display = "block";
-            document.getElementById('quiz-result').innerText = "";
+            // Simulate AI Response
+            setTimeout(() => {
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai-msg';
+                
+                let response = "वह बहुत अच्छा सवाल है! मुझे इसके बारे में और बताने दें।";
+                
+                if(userText.includes("hello") || userText.includes("hi")) {
+                    response = "नमस्ते! मैं आपकी भाषा सीखने में कैसे मदद कर सकता हूँ?";
+                } else if(userText.includes("grammar")) {
+                    response = "Grammar सीखने के लिए हमें सबसे पहले Sentence Structure पर ध्यान देना चाहिए।";
+                } else if(userText.includes("name")) {
+                    response = "मेरा नाम सचिन एआई ट्यूटर है।";
+                }
 
-            // Reset Chat
-            const chatWin = document.getElementById('chat-window');
-            chatWin.innerHTML = `<div class="message ai-message">${db[lang].aiHello}</div>`;
+                aiDiv.innerText = response;
+                chatBox.appendChild(aiDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1000);
 
-            showPage('chat');
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
         function handleKeyPress(e) {
             if (e.key === 'Enter') sendMessage();
         }
 
-        function sendMessage() {
-            const input = document.getElementById('user-input');
-            const msg = input.value.trim();
-            if (!msg) return;
-
-            if (!currentLanguage) {
-                alert("Please select a language first!");
-                return;
+        // Quiz Logic
+        function checkAnswer(isCorrect) {
+            const result = document.getElementById('quiz-result');
+            if(isCorrect) {
+                result.innerText = "सही जवाब! 🎉";
+                result.style.color = "green";
+            } else {
+                result.innerText = "गलत जवाब, फिर से कोशिश करें। ❌";
+                result.style.color = "red";
             }
-
-            const chatWin = document.getElementById('chat-window');
-            
-            // User Message
-            const userDiv = document.createElement('div');
-            userDiv.className = 'message user-message';
-            userDiv.innerText = msg;
-            chatWin.appendChild(userDiv);
-
-            input.value = "";
-
-            // Simulated AI Reply
-            setTimeout(() => {
-                const aiDiv = document.createElement('div');
-                aiDiv.className = 'message ai-message';
-                aiDiv.innerText = `That's a great question about ${currentLanguage}! Let's keep practicing. You said: "${msg}"`;
-                chatWin.appendChild(aiDiv);
-                chatWin.scrollTop = chatWin.scrollHeight;
-            }, 1000);
         }
 
-        function checkQuiz() {
-            if (!currentLanguage) return;
-            const questions = db[currentLanguage].quiz;
-            let score = 0;
+        function showToast(msg) {
+            alert(msg);
+        }
 
-            questions.forEach((q, index) => {
-                const userAnswer = document.getElementById(`q-${index}`).value.toLowerCase().trim();
-                if (userAnswer === q.a.toLowerCase()) {
-                    score++;
-                }
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
-
-            document.getElementById('quiz-result').innerText = `You scored ${score} out of ${questions.length}!`;
-        }
+        });
     </script>
 </body>
-</html>
+    </html>
