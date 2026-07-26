@@ -1,521 +1,362 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sachin AI Tutor | Pro Language Learning</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
+    <title>Sachin AI Tutor v3.3 | Premium AI Education</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 
+                            400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 
+                            800: '#1e40af', 900: '#1e3a8a', 950: '#172554',
+                        },
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --secondary: #10b981;
-            --accent: #f59e0b;
-            --bg-light: #f8fafc;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.9);
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        body {
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            overflow-x: hidden;
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+
+        .blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.2) 100%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
         }
 
-        /* Utility Classes */
-        .hidden { display: none !important; }
-        .flex-center { display: flex; align-items: center; justify-content: center; }
+        /* Hide sections logic */
+        .page-section { display: none; }
+        .page-section.active { display: block; }
 
-        /* Navigation */
-        nav {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        /* Typing Indicator */
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.4s infinite ease-in-out both;
         }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Hero Section */
-        #hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
-        }
-
-        #hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        #hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 2rem;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            background: var(--primary-dark);
-        }
-
-        /* Language Selection */
-        #language-selection {
-            padding: 100px 5%;
-            text-align: center;
-        }
-
-        .lang-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .lang-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 2px solid transparent;
-            box-shadow: var(--shadow);
-        }
-
-        .lang-card:hover {
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .lang-card i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        /* Main App Layout */
-        #app-container {
-            display: grid;
-            grid-template-columns: 280px 1fr 300px;
-            height: 100vh;
-            padding-top: 70px;
-        }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            background: white;
-            border-right: 1px solid #e2e8f0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .nav-item {
-            padding: 12px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: #f1f5f9;
-            color: var(--primary);
-        }
-
-        /* Chat Area */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            background: #fdfdfd;
-            height: 100%;
-        }
-
-        #chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .msg {
-            max-width: 80%;
-            padding: 12px 18px;
-            border-radius: 18px;
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-
-        .msg.ai {
-            align-self: flex-start;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-bottom-left-radius: 2px;
-        }
-
-        .msg.user {
-            align-self: flex-end;
-            background: var(--primary);
-            color: white;
-            border-bottom-right-radius: 2px;
-        }
-
-        .chat-input-area {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            gap: 10px;
-        }
-
-        input[type="text"] {
-            flex: 1;
-            padding: 12px 20px;
-            border: 1px solid #e2e8f0;
-            border-radius: 25px;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--primary);
-        }
-
-        /* Right Panel Tools */
-        .tools-panel {
-            background: white;
-            border-left: 1px solid #e2e8f0;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .tool-card {
-            background: var(--bg-light);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .tool-card h4 {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            height: 8px;
-            background: #e2e8f0;
-            border-radius: 4px;
-            margin: 10px 0;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--secondary);
-            width: 35%;
-            border-radius: 4px;
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 1024px) {
-            #app-container {
-                grid-template-columns: 80px 1fr;
-            }
-            .tools-panel, .nav-text { display: none; }
-        }
-
-        @media (max-width: 768px) {
-            #hero h1 { font-size: 2.5rem; }
-            #app-container { grid-template-columns: 1fr; }
-            .sidebar {
-                position: fixed;
-                bottom: 0;
-                flex-direction: row;
-                width: 100%;
-                height: 70px;
-                justify-content: space-around;
-                z-index: 100;
-            }
-            .chat-container { padding-bottom: 70px; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+    <!-- Background Elements -->
+    <div class="blob top-0 left-0"></div>
+    <div class="blob bottom-0 right-0"></div>
 
     <!-- Navigation -->
-    <nav>
-        <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>Sachin AI Tutor <small style="font-size: 10px; vertical-align: middle;">V3.2</small></span>
-        </div>
-        <div id="user-info" class="hidden">
-            <span id="current-lang-display" style="font-weight: 600; color: var(--secondary);"></span>
+    <nav class="fixed top-0 w-full z-50 glass shadow-sm border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('home')">
+                    <div class="bg-primary-600 p-2 rounded-xl">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <span class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-purple-600">
+                        Sachin AI Tutor <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 ml-1">v3.3</span>
+                    </span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <button onclick="showPage('home')" class="hover:text-primary-500 font-medium transition">Home</button>
+                    <button onclick="showPage('dashboard')" class="hover:text-primary-500 font-medium transition">Dashboard</button>
+                    <button onclick="showPage('tutor')" class="hover:text-primary-500 font-medium transition">AI Teacher</button>
+                    <button onclick="showPage('practice')" class="hover:text-primary-500 font-medium transition">Practice</button>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button id="themeToggle" class="p-2 rounded-full hover:bg-white/10 transition">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+                    <div class="h-8 w-[1px] bg-white/20"></div>
+                    <button onclick="showPage('profile')" class="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-full font-medium hover:bg-primary-700 transition">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Profile</span>
+                    </button>
+                    <button class="md:hidden text-2xl" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <!-- Section 1: Hero -->
-    <section id="hero">
-        <h1>Master Any Language with AI</h1>
-        <p>Your personal AI tutor for 100+ languages. Practice speaking, correct your grammar, and learn 10x faster with personalized feedback.</p>
-        <button class="btn-primary" onclick="startLearning()">Get Started Free</button>
-    </section>
+    <!-- Content Area -->
+    <main class="pt-24 pb-12 min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- Section 2: Language Selection -->
-    <section id="language-selection" class="hidden">
-        <h2>Choose a language to master</h2>
-        <div class="lang-grid" id="lang-grid">
-            <!-- Populated by JS -->
-        </div>
-    </section>
-
-    <!-- Section 3: Main App Interface -->
-    <main id="app-container" class="hidden">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="nav-item active" onclick="switchTab('chat')">
-                <i class="fas fa-comment-dots"></i>
-                <span class="nav-text">AI Tutor Chat</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('grammar')">
-                <i class="fas fa-spell-check"></i>
-                <span class="nav-text">Grammar Lab</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('vocab')">
-                <i class="fas fa-book"></i>
-                <span class="nav-text">Vocabulary</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('quiz')">
-                <i class="fas fa-tasks"></i>
-                <span class="nav-text">Daily Quiz</span>
-            </div>
-            <div style="margin-top: auto;" class="nav-item" onclick="location.reload()">
-                <i class="fas fa-sign-out-alt"></i>
-                <span class="nav-text">Exit Class</span>
-            </div>
-        </aside>
-
-        <!-- Chat Interface -->
-        <section class="chat-container">
-            <div id="chat-messages">
-                <div class="msg ai">
-                    Hello! I am Sachin, your AI Tutor. I'm ready to help you master your chosen language. How would you like to start today?
+        <!-- HOME PAGE -->
+        <section id="home" class="page-section active animate-fade-in">
+            <div class="flex flex-col items-center text-center py-12 md:py-20">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-6">
+                    Master Any Language <br/>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary-500 via-purple-500 to-pink-500">
+                        Powered by Advanced AI
+                    </span>
+                </h1>
+                <p class="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mb-10">
+                    Experience the future of education with Sachin AI Tutor. Personalised lessons, real-time corrections, and immersive practice in over 100 languages.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="showPage('tutor')" class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-bold text-lg transition transform hover:scale-105 shadow-xl shadow-primary-500/25">
+                        Start Learning Now
+                    </button>
+                    <button onclick="showPage('practice')" class="px-8 py-4 glass rounded-2xl font-bold text-lg hover:bg-white/10 transition">
+                        Browse Modules
+                    </button>
                 </div>
-            </div>
-            <div class="chat-input-area">
-                <input type="text" id="user-input" placeholder="Ask anything or practice a sentence..." onkeypress="handleKeyPress(event)">
-                <button class="btn-primary" onclick="sendMessage()" style="padding: 10px 25px;">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 w-full">
+                    <div class="p-6 glass rounded-3xl border border-white/10">
+                        <div class="text-3xl font-bold text-primary-500 mb-2">100+</div>
+                        <div class="text-sm opacity-70">World Languages</div>
+                    </div>
+                    <div class="p-6 glass rounded-3xl border border-white/10">
+                        <div class="text-3xl font-bold text-purple-500 mb-2">24/7</div>
+                        <div class="text-sm opacity-70">AI Support</div>
+                    </div>
+                    <div class="p-6 glass rounded-3xl border border-white/10">
+                        <div class="text-3xl font-bold text-emerald-500 mb-2">10k+</div>
+                        <div class="text-sm opacity-70">Practice Quizzes</div>
+                    </div>
+                    <div class="p-6 glass rounded-3xl border border-white/10">
+                        <div class="text-3xl font-bold text-pink-500 mb-2">Free</div>
+                        <div class="text-sm opacity-70">Premium Experience</div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Right Panel Tools -->
-        <aside class="tools-panel">
-            <div class="tool-card">
-                <h4>Your Progress</h4>
-                <div class="progress-container">
-                    <div class="progress-bar" id="learning-progress"></div>
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page-section animate-fade-in">
+            <div class="flex flex-col gap-8">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h2 class="text-3xl font-bold">Welcome back, Scholar!</h2>
+                        <p class="opacity-60">Here is your learning progress for this week.</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-medium text-primary-500 uppercase tracking-widest">Current Streak</div>
+                        <div class="text-3xl font-bold">🔥 12 Days</div>
+                    </div>
                 </div>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">35% of daily goal reached</p>
-            </div>
 
-            <div class="tool-card">
-                <h4>Grammar Tip</h4>
-                <p id="grammar-tip" style="font-size: 0.9rem;">The present continuous is used for actions happening right now.</p>
-            </div>
-
-            <div class="tool-card">
-                <h4>Word of the Day</h4>
-                <div style="font-weight: 700; color: var(--primary);" id="word-day">Eloquent</div>
-                <p id="word-def" style="font-size: 0.85rem; margin-top: 5px;">Fluent or persuasive in speaking or writing.</p>
-            </div>
-
-            <div class="tool-card">
-                <h4>Practice Stats</h4>
-                <div style="display:flex; justify-content: space-between; font-size: 0.85rem;">
-                    <span>Mistakes:</span> <span style="color: #ef4444;">2</span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="col-span-1 md:col-span-2 glass rounded-3xl p-8">
+                        <h3 class="text-xl font-bold mb-6">Learning Activity</h3>
+                        <div class="flex items-end justify-between h-48 gap-2">
+                            <div class="w-full bg-primary-500/20 rounded-t-lg h-[40%]"></div>
+                            <div class="w-full bg-primary-500/40 rounded-t-lg h-[60%]"></div>
+                            <div class="w-full bg-primary-500/20 rounded-t-lg h-[30%]"></div>
+                            <div class="w-full bg-primary-600 rounded-t-lg h-[90%]"></div>
+                            <div class="w-full bg-primary-500/40 rounded-t-lg h-[50%]"></div>
+                            <div class="w-full bg-primary-500/60 rounded-t-lg h-[75%]"></div>
+                            <div class="w-full bg-primary-500/30 rounded-t-lg h-[45%]"></div>
+                        </div>
+                        <div class="flex justify-between mt-4 text-xs opacity-50 font-medium">
+                            <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+                        </div>
+                    </div>
+                    <div class="glass rounded-3xl p-8 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Target Language</h3>
+                            <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl">
+                                <span class="text-2xl">🇪🇸</span>
+                                <div>
+                                    <div class="font-bold">Spanish</div>
+                                    <div class="text-xs opacity-50">Intermediate B2</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Level Progress</span>
+                                <span>78%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-3 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-primary-500 to-purple-500 h-full w-[78%]"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div style="display:flex; justify-content: space-between; font-size: 0.85rem; margin-top: 5px;">
-                    <span>Accuracy:</span> <span style="color: var(--secondary);">92%</span>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="p-6 glass rounded-3xl">
+                        <i class="fas fa-book text-blue-500 mb-4 text-2xl"></i>
+                        <h4 class="font-bold">Vocabulary</h4>
+                        <p class="text-2xl font-bold">1,240</p>
+                        <p class="text-xs opacity-50">Words Mastered</p>
+                    </div>
+                    <div class="p-6 glass rounded-3xl">
+                        <i class="fas fa-microphone text-emerald-500 mb-4 text-2xl"></i>
+                        <h4 class="font-bold">Pronunciation</h4>
+                        <p class="text-2xl font-bold">92%</p>
+                        <p class="text-xs opacity-50">Accuracy Rate</p>
+                    </div>
+                    <div class="p-6 glass rounded-3xl">
+                        <i class="fas fa-clock text-purple-500 mb-4 text-2xl"></i>
+                        <h4 class="font-bold">Study Time</h4>
+                        <p class="text-2xl font-bold">48h</p>
+                        <p class="text-xs opacity-50">This Month</p>
+                    </div>
+                    <div class="p-6 glass rounded-3xl">
+                        <i class="fas fa-award text-amber-500 mb-4 text-2xl"></i>
+                        <h4 class="font-bold">Badges</h4>
+                        <p class="text-2xl font-bold">14</p>
+                        <p class="text-xs opacity-50">Unlocked</p>
+                    </div>
                 </div>
             </div>
-        </aside>
-    </main>
+        </section>
 
-    <script>
-        // Data Structure for 100+ Languages (Abbreviated for code length)
-        const languages = [
-            { name: "English", icon: "🇺🇸" }, { name: "Hindi", icon: "🇮🇳" },
-            { name: "Spanish", icon: "🇪🇸" }, { name: "French", icon: "🇫🇷" },
-            { name: "German", icon: "🇩🇪" }, { name: "Japanese", icon: "🇯🇵" },
-            { name: "Korean", icon: "🇰🇷" }, { name: "Chinese", icon: "🇨🇳" },
-            { name: "Arabic", icon: "🇸🇦" }, { name: "Urdu", icon: "🇵🇰" },
-            { name: "Punjabi", icon: "🌾" }, { name: "Russian", icon: "🇷🇺" },
-            { name: "Portuguese", icon: "🇵🇹" }, { name: "Italian", icon: "🇮🇹" },
-            { name: "Turkish", icon: "🇹🇷" }, { name: "Vietnamese", icon: "🇻🇳" }
-            // Logic exists to add up to 100+ easily
-        ];
+        <!-- AI TEACHER / TUTOR INTERFACE -->
+        <section id="tutor" class="page-section animate-fade-in h-[calc(100vh-180px)]">
+            <div class="flex h-full gap-6">
+                <!-- Sidebar Tools -->
+                <div class="hidden lg:flex flex-col w-64 gap-4">
+                    <div class="glass rounded-3xl p-4">
+                        <h3 class="text-sm font-bold uppercase opacity-50 mb-4">Settings</h3>
+                        <label class="block text-xs mb-2">Select Language</label>
+                        <div class="relative">
+                            <input type="text" id="langSearch" placeholder="Search 100+ languages..." class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            <div id="langDropdown" class="absolute z-10 w-full mt-1 max-h-48 overflow-y-auto glass rounded-xl hidden">
+                                <!-- JS populated -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass rounded-3xl p-4 flex-grow">
+                        <h3 class="text-sm font-bold uppercase opacity-50 mb-4">Chat History</h3>
+                        <div class="space-y-3 opacity-40 text-center py-10">
+                            <i class="fas fa-history text-2xl mb-2"></i>
+                            <p class="text-xs">No recent sessions</p>
+                        </div>
+                    </div>
+                </div>
 
-        let selectedLanguage = "";
-        let chatHistory = [];
+                <!-- Main Chat -->
+                <div class="flex-grow flex flex-col glass rounded-3xl overflow-hidden border border-white/10">
+                    <!-- Chat Header -->
+                    <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+                        <div class="flex items-center gap-3">
+                            <div class="relative">
+                                <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-robot text-white"></i>
+                                </div>
+                                <div class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full"></div>
+                            </div>
+                            <div>
+                                <div class="font-bold leading-none">Sachin AI Teacher</div>
+                                <div class="text-[10px] text-emerald-500 font-bold uppercase">Online</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="p-2 hover:bg-white/10 rounded-lg"><i class="fas fa-phone"></i></button>
+                            <button class="p-2 hover:bg-white/10 rounded-lg"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                    </div>
 
-        // Initialize Language Grid
-        function initLanguages() {
-            const grid = document.getElementById('lang-grid');
-            languages.forEach(lang => {
-                const card = document.createElement('div');
-                card.className = 'lang-card';
-                card.innerHTML = `
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;">${lang.icon}</div>
-                    <div style="font-weight: 600;">${lang.name}</div>
-                `;
-                card.onclick = () => selectLanguage(lang.name);
-                grid.appendChild(card);
-            });
-        }
+                    <!-- Chat Messages -->
+                    <div id="chatMessages" class="flex-grow overflow-y-auto p-6 space-y-6">
+                        <!-- Bot Greeting -->
+                        <div class="flex gap-4 max-w-[80%]">
+                            <div class="w-8 h-8 rounded-full bg-primary-600 flex-shrink-0 flex items-center justify-center text-xs">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-2xl rounded-tl-none border border-white/5">
+                                <p class="text-sm">Hello! I am your Sachin AI Personal Tutor. I can help you practice grammar, vocabulary, or just have a conversation in any language. What would you like to learn today?</p>
+                            </div>
+                        </div>
 
-        function startLearning() {
-            document.getElementById('hero').classList.add('hidden');
-            document.getElementById('language-selection').classList.remove('hidden');
-            initLanguages();
-        }
+                        <!-- Not Connected Notice (Requested Requirement) -->
+                        <div id="apiNotice" class="mx-auto max-w-md text-center p-6 glass border-amber-500/30 rounded-3xl mt-10">
+                            <i class="fas fa-plug text-amber-500 text-3xl mb-4"></i>
+                            <h4 class="font-bold text-amber-500">AI Not Connected</h4>
+                            <p class="text-sm opacity-70 mt-2">AI is not connected yet. Configure an AI API (Gemini or OpenAI) in the settings to start learning.</p>
+                            <button class="mt-4 px-4 py-2 bg-amber-500/20 text-amber-500 rounded-xl text-xs font-bold border border-amber-500/20 hover:bg-amber-500/30 transition">
+                                Connect API Key
+                            </button>
+                        </div>
+                    </div>
 
-        function selectLanguage(lang) {
-            selectedLanguage = lang;
-            document.getElementById('language-selection').classList.add('hidden');
-            document.getElementById('app-container').classList.remove('hidden');
-            document.getElementById('user-info').classList.remove('hidden');
-            document.getElementById('current-lang-display').innerText = `Learning ${lang}`;
-            
-            // Initial AI Message
-            addChatMessage(`Great choice! I am now your ${lang} tutor. We can practice conversation, check grammar, or learn new vocabulary. What's on your mind?`, 'ai');
-        }
+                    <!-- Typing Animation -->
+                    <div id="typingIndicator" class="px-6 py-2 hidden">
+                        <div class="flex items-center gap-2 text-xs opacity-50">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <span>Sachin AI is thinking...</span>
+                        </div>
+                    </div>
 
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') sendMessage();
-        }
+                    <!-- Input Area -->
+                    <div class="p-4 bg-white/5 border-t border-white/10">
+                        <form id="chatForm" class="flex gap-2">
+                            <input type="text" id="userInput" placeholder="Type your message here..." class="flex-grow bg-white/5 border border-white/10 rounded-2xl px-6 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 transition">
+                            <button type="submit" class="w-12 h-12 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl flex items-center justify-center transition shadow-lg shadow-primary-500/20">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        function sendMessage() {
-            const input = document.getElementById('user-input');
-            const text = input.value.trim();
-            
-            if (text === "") return;
-
-            addChatMessage(text, 'user');
-            input.value = "";
-
-            // Simulated AI Response Logic (Ready for API integration)
-            setTimeout(() => {
-                const response = processAIRequest(text);
-                addChatMessage(response, 'ai');
-            }, 800);
-        }
-
-        function addChatMessage(text, sender) {
-            const container = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            div.className = `msg ${sender}`;
-            div.innerText = text;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // Logic Engine - Ready for API Call
-        function processAIRequest(text) {
-            const input = text.toLowerCase();
-            
-            if (input.includes("grammar") || input.includes("correct")) {
-                return `[Grammar Correction] Your sentence structure looks good, but in ${selectedLanguage}, we usually focus on the verb agreement. Here is the rule: ...`;
-            }
-            if (input.includes("translate")) {
-                return `Sure! In ${selectedLanguage}, that phrase translates to: "[Sample Translation]".`;
-            }
-            if (input.includes("quiz")) {
-                return `Let's start a mini quiz! What is the common greeting in ${selectedLanguage}?`;
-            }
-            
-            return `That's interesting! Let's explore more about "${text}" in ${selectedLanguage}. Would you like me to explain the grammar rules for this?`;
-        }
-
-        function switchTab(tab) {
-            // UI Visual Update
-            const items = document.querySelectorAll('.nav-item');
-            items.forEach(i => i.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-
-            // Logic for switching content
-            if (tab === 'grammar') {
-                addChatMessage("Entering Grammar Lab Mode. Send me any sentence and I will analyze it.", "ai");
-            } else if (tab === 'vocab') {
-                addChatMessage(`Here are 5 new words in ${selectedLanguage} for today...`, "ai");
-            } else if (tab === 'quiz') {
-                addChatMessage("Quiz starting... Question 1: Translate 'Hello' into your target language.", "ai");
-            }
-        }
-
-        // Initialize on load
-        window.onload = () => {
-            console.log("Sachin AI Tutor V3.2 Loaded Successfully");
-        };
-    </script>
-</body>
-        </html>
+        <!-- PRACTICE MODULES -->
+        <section id="practice" class="page-section animate-fade-in">
+            <h2 class="text-3xl font-bold mb-8">Learning Modules</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Grammar -->
+                <div class="group glass p-8 rounded-3xl border border-white/10 hover:border-primary-500/
