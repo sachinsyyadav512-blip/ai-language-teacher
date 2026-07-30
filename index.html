@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sachin Demo Restaurant</title>
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+}
+header{
+background:#111827;
+padding:15px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+color:#f59e0b;
+}
+.hero{
+background:url('https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1600&auto=format&fit=crop') center/cover;
+padding:80px 20px;
+text-align:center;
+}
+.hero h1{
+font-size:42px;
+margin-bottom:10px;
+}
+.hero p{
+font-size:18px;
+margin-bottom:20px;
+}
+.btn{
+display:inline-block;
+padding:14px 24px;
+margin:10px;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+color:white;
+}
+.whatsapp{background:#25D366;}
+.call{background:#2563eb;}
+
+.menu{
+padding:40px 20px;
+}
+.menu h2{
+text-align:center;
+color:#f59e0b;
+margin-bottom:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:20px;
+}
+
+.card{
+background:#1e293b;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 8px 20px rgba(0,0,0,.3);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.card-content{
+padding:15px;
+text-align:center;
+}
+
+.card h3{
+margin:10px 0;
+}
+
+.price{
+font-size:24px;
+font-weight:bold;
+color:#f59e0b;
+margin:10px 0;
+}
+
+.order{
+display:inline-block;
+background:#16a34a;
+color:white;
+padding:10px 20px;
+border-radius:25px;
+text-decoration:none;
+font-weight:bold;
+}
+
+footer{
+background:#111827;
+text-align:center;
+padding:20px;
+margin-top:40px;
+color:#cbd5e1;
+}
+</style>
+</head>
+<body>
+
+<header>☕ SACHIN DEMO RESTAURANT</header>
+
+<section class="hero">
+<h1>Premium Tea & Fast Food</h1>
+<p>Delicious food, beautiful design, and easy ordering</p>
+<a class="btn whatsapp" href="#">WhatsApp</a>
+<a class="btn call" href="#">Call Now</a>
+</section>
+
+<section class="menu">
+<h2>🍽️ Our Menu</h2>
+
+<div class="grid">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1200&auto=format&fit=crop">
+<div class="card-content">
+<h3>Special Tea</h3>
+<div class="price">₹10</div>
+<a class="order" href="#">Order</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=1200&auto=format&fit=crop">
+<div class="card-content">
+<h3>Cheese Burger</h3>
+<div class="price">₹50</div>
+<a class="order" href="#">Order</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop">
+<div class="card-content">
+<h3>Paneer Pizza</h3>
+<div class="price">₹149</div>
+<a class="order" href="#">Order</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?q=80&w=1200&auto=format&fit=crop">
+<div class="card-content">
+<h3>Paneer Noodles</h3>
+<div class="price">₹40</div>
+<a class="order" href="#">Order</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<footer>
+© 2026 Sachin Demo Restaurant | Premium Template
+</footer>
+
+</body>
+</html>
